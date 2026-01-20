@@ -1,0 +1,21 @@
+simulation:
+  n_simulations: 50000
+
+frequency:
+  distribution: poisson
+  lambda: 5
+
+severity:
+  distribution: lognormal
+  mu: 13.0
+  sigma: 1.0
+
+reinsurance:
+  type: XoL
+  retention: 1000000
+  limit: 4000000
+
+pricing:
+  expense_ratio: 0.05
+  risk_measure: TVaR
+  confidence_level: 0.99

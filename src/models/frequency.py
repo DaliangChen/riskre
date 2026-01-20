@@ -1,9 +1,5 @@
-# src/models/frequency.py
-
 import numpy as np
 
-# Average number of claims per year
-LAMBDA = 5
-
-def sample_frequency():
-    return np.random.poisson(LAMBDA)
+def sample_frequency(config):
+    lam = config["frequency"]["lambda"]
+    return np.random.poisson(lam)
