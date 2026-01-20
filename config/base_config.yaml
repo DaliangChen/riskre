@@ -1,21 +1,33 @@
 simulation:
+  # Number of Monte Carlo simulations to run
   n_simulations: 50000
 
 frequency:
+  # Distribution of claim frequency (poisson or exponential)
   distribution: poisson
+  # Parameter for poisson distribution (lambda)
   lambda: 5
 
 severity:
+  # Distribution of claim severity (lognormal or exponential)
   distribution: lognormal
+  # Parameter for lognormal distribution (mu)
   mu: 13.0
+  # Parameter for lognormal distribution (sigma)
   sigma: 1.0
 
 reinsurance:
+  # Type of reinsurance
   type: XoL
+  # Retention amount for reinsurance
   retention: 1000000
+  # Limit amount for reinsurance
   limit: 4000000
 
 pricing:
+  # Expense ratio for reinsurance
   expense_ratio: 0.05
+  # Risk measure to use (expected_loss, var, tvar, pml)
   risk_measure: TVaR
+  # Confidence level for risk measure
   confidence_level: 0.99
