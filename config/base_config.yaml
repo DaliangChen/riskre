@@ -6,7 +6,7 @@ frequency:
   # Distribution of claim frequency (poisson or exponential)
   distribution: poisson
   # Parameter for poisson distribution (lambda)
-  lambda: 5
+  lam: 5
 
 severity:
   # Distribution of claim severity (lognormal or exponential)
