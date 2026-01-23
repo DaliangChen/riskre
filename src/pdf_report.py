@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import matplotlib.pyplot as plt
 from reportlab.platypus import (
     SimpleDocTemplate,
-    getSampleStyleSheet,
     Paragraph,
     Spacer,
     Image,
@@ -16,6 +16,7 @@ from reportlab.platypus import (
 from reportlab.lib import colors
 from config_loader import InsuranceConfig
 from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
 
 
 class PricingReportGenerator:
@@ -33,8 +34,8 @@ class PricingReportGenerator:
     def generate(
         self,
         config: InsuranceConfig,
-        results: Dict[str, np.ndarray],
-        pricing: Dict[str, float],
+        results: Any,
+        pricing: Any,
         filename: str = "pricing_report.pdf",
     ) -> Path:
         """
@@ -68,12 +69,12 @@ class PricingReportGenerator:
         # -----------------------------
         elements.append(Paragraph("1. Contract Summary", styles["Heading2"]))
 
-        reins = config["reinsurance"]
+        reins = config.reinsurance
         summary_data = [
-            ["Treaty Type", reins["type"]],
-            ["Retention", f"{reins['retention']:,.0f}"],
-            ["Limit", f"{reins['limit']:,.0f}"],
-            ["Simulations", str(config["simulation"]["n_simulations"])],
+            ["Treaty Type", reins.type],
+            ["Retention", f"{reins.retention:,.0f}"],
+            ["Limit", f"{reins.limit:,.0f}"],
+            ["Simulations", str(config.simulation.n_simulations)],
         ]
 
         table = Table(summary_data, hAlign="LEFT")
@@ -93,14 +94,14 @@ class PricingReportGenerator:
         # -----------------------------
         elements.append(Paragraph("2. Model Assumptions", styles["Heading2"]))
 
-        freq = config["frequency"]
-        sev = config["severity"]
-        pricing_cfg = config["pricing"]
+        freq = config.frequency
+        sev = config.severity
+        pricing_cfg = config.pricing
 
         assumptions_text = f"""
-        <b>Frequency Model:</b> {freq['distribution']} (λ = {freq['lam']})<br/>
-        <b>Severity Model:</b> {sev['distribution']} (μ = {sev.get('mu', '-')}, σ = {sev.get('sigma', '-')})<br/>
-        <b>Risk Measure:</b> {pricing_cfg['risk_measure']} at {pricing_cfg['confidence_level']}
+        <b>Frequency Model:</b> {freq.distribution} (λ = {freq.lam})<br/>
+        <b>Severity Model:</b> {sev.distribution} (μ = {getattr(sev, 'mu', '-')}, σ = {getattr(sev, 'sigma', '-')})<br/>
+        <b>Risk Measure:</b> {pricing_cfg.risk_measure} at {pricing_cfg.confidence_level}
         """
 
         elements.append(Paragraph(assumptions_text, styles["Normal"]))
