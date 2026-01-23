@@ -4,9 +4,6 @@ from pydantic import BaseModel, Field, model_validator
 from typing import Literal, Union
 
 
-# -----------------------------
-# Simulation
-# -----------------------------
 class SimulationConfig(BaseModel):
     """
     Configuration for Monte Carlo simulation
@@ -15,9 +12,6 @@ class SimulationConfig(BaseModel):
     n_simulations: int = Field(gt=0, description="Number of Monte Carlo runs")
 
 
-# -----------------------------
-# Frequency
-# -----------------------------
 class FrequencyConfig(BaseModel):
     """
     Configuration for frequency model
@@ -27,16 +21,21 @@ class FrequencyConfig(BaseModel):
     lam: float = Field(gt=0, description="Poisson lambda or exponential rate")
 
 
-# -----------------------------
-# Severity
-# -----------------------------
 class LognormalSeverityConfig(BaseModel):
+    """
+    Configuration for lognormal severity model
+    """
+
     distribution: Literal["lognormal"]
     mu: float
     sigma: float = Field(gt=0)
 
 
 class ExponentialSeverityConfig(BaseModel):
+    """
+    Configuration for exponential severity model
+    """
+
     distribution: Literal["exponential"]
     rate: float = Field(gt=0)
 
@@ -44,9 +43,6 @@ class ExponentialSeverityConfig(BaseModel):
 SeverityConfig = Union[LognormalSeverityConfig, ExponentialSeverityConfig]
 
 
-# -----------------------------
-# Reinsurance
-# -----------------------------
 class ReinsuranceConfig(BaseModel):
     """
     Configuration for reinsurance structure
@@ -57,9 +53,6 @@ class ReinsuranceConfig(BaseModel):
     limit: float = Field(gt=0)
 
 
-# -----------------------------
-# Pricing
-# -----------------------------
 class PricingConfig(BaseModel):
     """
     Configuration for pricing model
@@ -70,9 +63,6 @@ class PricingConfig(BaseModel):
     confidence_level: float = Field(gt=0, lt=1)
 
 
-# -----------------------------
-# Main Config
-# -----------------------------
 class InsuranceConfig(BaseModel):
     """
     Main configuration for reinsurance pricing system
@@ -92,9 +82,6 @@ class InsuranceConfig(BaseModel):
         return self
 
 
-# -----------------------------
-# Loader
-# -----------------------------
 def load_config(path: str | Path = "config/base_config.yaml") -> InsuranceConfig:
     """
     Load and validate configuration from YAML file
