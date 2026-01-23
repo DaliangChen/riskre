@@ -1,7 +1,10 @@
 # src/pricing/pricing.py
 from config_loader import PricingConfig
 
-def calculate_premium(expected_loss: float, tvar: float, config: PricingConfig) -> float:
+
+def calculate_premium(
+    expected_loss: float, tvar: float, config: PricingConfig
+) -> float:
     """
     Simple technical premium with risk loading
     """

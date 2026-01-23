@@ -1,6 +1,6 @@
 from config_loader import load_config
-from  monte_carlo import run_simulation
-from  risk_metrics import compute_risk_metrics
+from monte_carlo import run_simulation
+from risk_metrics import compute_risk_metrics
 from pricing.pricing import calculate_premium
 
 

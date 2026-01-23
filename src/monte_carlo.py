@@ -4,6 +4,7 @@ from models.loss_model import simulate_annual_loss
 from src.xol import xol_payout
 from config_loader import InsuranceConfig
 
+
 def run_simulation(config: InsuranceConfig) -> np.ndarray:
     """
     run monte carlo simulation

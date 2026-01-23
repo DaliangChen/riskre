@@ -1,6 +1,7 @@
 # src/reinsurance/xol.py
 from config_loader import ReinsuranceConfig
 
+
 def xol_payout(loss: float, config: ReinsuranceConfig) -> float:
     """
     Excess of Loss payout per loss
