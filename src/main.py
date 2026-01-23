@@ -1,8 +1,8 @@
-from core.frequency import PoissonFrequency
-from core.severity import LognormalSeverity
-from core.simulator import MonteCarloEngine
-from pricing.premium import PremiumCalculator
 import config_loader as cfg
+from frequency import PoissonFrequency
+from premium import PremiumCalculator
+from severity import LognormalSeverity
+from simulator import MonteCarloEngine
 
 
 def build_frequency(cfg: cfg.FrequencyConfig) -> PoissonFrequency:
