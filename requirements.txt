@@ -4,3 +4,5 @@ pandas
 pyyaml
 pydantic
 types-PyYAML
+matplotlib 
+reportlab

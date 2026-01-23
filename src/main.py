@@ -3,6 +3,7 @@ from frequency import PoissonFrequency
 from premium import PremiumCalculator
 from severity import LognormalSeverity
 from simulator import MonteCarloEngine
+from pdf_report import PricingReportGenerator
 
 
 def build_frequency(cfg: cfg.FrequencyConfig) -> PoissonFrequency:
@@ -44,6 +45,17 @@ def main() -> None:
     print(f"Expected Loss: {results['reinsurance_losses'].mean():,.0f}")
     print(f"Technical Premium: {premium['technical']:,.0f}")
     print(f"Commercial Premium: {premium['commercial']:,.0f}")
+
+    reporter = PricingReportGenerator()
+
+    pdf_path = reporter.generate(
+        config=config,
+        results=results,
+        pricing=premium,
+        filename="reinsurance_pricing_report.pdf",
+    )
+
+    print(f"PDF report generated at: {pdf_path}")
 
 
 if __name__ == "__main__":
