@@ -1,29 +1,49 @@
-from config_loader import load_config
-from monte_carlo import run_simulation
-from risk_metrics import compute_risk_metrics
-from pricing.pricing import calculate_premium
+from core.frequency import PoissonFrequency
+from core.severity import LognormalSeverity
+from core.simulator import MonteCarloEngine
+from pricing.premium import PremiumCalculator
+import config_loader as cfg
 
 
-def main():
-    config = load_config()
+def build_frequency(cfg: cfg.FrequencyConfig) -> PoissonFrequency:
+    if cfg.distribution == "poisson":
+        return PoissonFrequency(cfg.lam)
+    raise ValueError("Unsupported frequency model")
 
-    print("Running Monte Carlo simulation...")
-    payouts = run_simulation(config)
 
-    metrics = compute_risk_metrics(payouts, alpha=config.pricing.confidence_level)
+def build_severity(cfg: cfg.SeverityConfig) -> LognormalSeverity:
+    if cfg.distribution == "lognormal":
+        return LognormalSeverity(cfg.mu, cfg.sigma)
+    raise ValueError("Unsupported severity model")
 
-    premium = calculate_premium(
-        expected_loss=metrics["expected_loss"],
-        tvar=metrics["tvar"],
-        expense_ratio=config.pricing.expense_ratio,
+
+def main() -> None:
+    config = cfg.load_config()
+
+    freq_model = build_frequency(config.frequency)
+    sev_model = build_severity(config.severity)
+
+    engine = MonteCarloEngine(
+        freq_model=freq_model,
+        severity_model=sev_model,
+        retention=config.reinsurance.retention,
+        limit=config.reinsurance.limit,
     )
 
-    print("\n=== Reinsurance Risk Metrics ===")
-    for k, v in metrics.items():
-        print(f"{k}: {v:,.2f}")
+    results = engine.run(config.simulation.n_simulations)
 
-    print("\n=== Pricing ===")
-    print(f"Technical Premium: {premium:,.2f}")
+    pricing = PremiumCalculator(
+        expense_ratio=config.pricing.expense_ratio,
+        risk_measure=config.pricing.risk_measure,
+        confidence_level=config.pricing.confidence_level,
+    )
+
+    premium = pricing.calculate(results["reinsurance_losses"])
+
+    print("\n--- REINSURANCE PRICING REPORT ---")
+    print(f"Expected Loss: {results['reinsurance_losses'].mean():,.0f}")
+    print(f"Technical Premium: {premium['technical']:,.0f}")
+    print(f"Commercial Premium: {premium['commercial']:,.0f}")
 
 
 if __name__ == "__main__":

@@ -1,61 +1,81 @@
 import yaml
-
-import yaml
 from pathlib import Path
-from pydantic import BaseModel, Field
-from typing import Literal
+from pydantic import BaseModel, Field, model_validator
+from typing import Literal, Union
 
 
+# -----------------------------
+# Simulation
+# -----------------------------
 class SimulationConfig(BaseModel):
     """
-    configuration for simulation model
+    Configuration for Monte Carlo simulation
     """
 
-    n_simulations: int
+    n_simulations: int = Field(gt=0, description="Number of Monte Carlo runs")
 
 
+# -----------------------------
+# Frequency
+# -----------------------------
 class FrequencyConfig(BaseModel):
     """
-    configuration for frequency model
+    Configuration for frequency model
     """
 
     distribution: Literal["poisson", "exponential"]
-    lam: int
+    lam: float = Field(gt=0, description="Poisson lambda or exponential rate")
 
 
-class SeverityConfig(BaseModel):
-    """
-    configuration for severity model
-    """
-
-    distribution: Literal["lognormal", "exponential"]
+# -----------------------------
+# Severity
+# -----------------------------
+class LognormalSeverityConfig(BaseModel):
+    distribution: Literal["lognormal"]
     mu: float
-    sigma: float
+    sigma: float = Field(gt=0)
 
 
+class ExponentialSeverityConfig(BaseModel):
+    distribution: Literal["exponential"]
+    rate: float = Field(gt=0)
+
+
+SeverityConfig = Union[LognormalSeverityConfig, ExponentialSeverityConfig]
+
+
+# -----------------------------
+# Reinsurance
+# -----------------------------
 class ReinsuranceConfig(BaseModel):
     """
-    configuration for reinsurance model
+    Configuration for reinsurance structure
     """
 
-    type: str
-    retention: int
-    limit: int
+    type: Literal["XoL"]
+    retention: float = Field(ge=0)
+    limit: float = Field(gt=0)
 
 
+# -----------------------------
+# Pricing
+# -----------------------------
 class PricingConfig(BaseModel):
     """
-    configuration for pricing model
+    Configuration for pricing model
     """
 
-    expense_ratio: float
-    risk_measure: Literal["expected_loss", "VaR", "TVaR", "pml"]
-    confidence_level: float
+    expense_ratio: float = Field(ge=0, le=1)
+    risk_measure: Literal["expected_loss", "VaR", "TVaR", "PML"]
+    confidence_level: float = Field(gt=0, lt=1)
 
 
+# -----------------------------
+# Main Config
+# -----------------------------
 class InsuranceConfig(BaseModel):
     """
-    main configuration for insurance model
+    Main configuration for reinsurance pricing system
     """
 
     simulation: SimulationConfig
@@ -64,14 +84,20 @@ class InsuranceConfig(BaseModel):
     reinsurance: ReinsuranceConfig
     pricing: PricingConfig
 
-    class Config:
-        # allow populating by field name or alias
-        populate_by_name = True
+    @model_validator(mode="after")
+    def check_confidence_level(self) -> "InsuranceConfig":
+        if self.pricing.risk_measure in {"VaR", "TVaR"}:
+            if self.pricing.confidence_level is None:
+                raise ValueError("confidence_level required for VaR/TVaR")
+        return self
 
 
+# -----------------------------
+# Loader
+# -----------------------------
 def load_config(path: str | Path = "config/base_config.yaml") -> InsuranceConfig:
     """
-    load configuration from yaml file
+    Load and validate configuration from YAML file
     """
     with open(path, "r", encoding="utf-8") as f:
         data = yaml.safe_load(f)
