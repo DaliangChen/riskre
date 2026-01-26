@@ -2,8 +2,9 @@ from __future__ import annotations
 
 
 import numpy as np
+from numpy.typing import NDArray
 from abc import ABC, abstractmethod
-
+ 
 
 class FrequencyModel(ABC):
     """
@@ -13,7 +14,7 @@ class FrequencyModel(ABC):
     """
 
     @abstractmethod
-    def simulate(self, n_years: int) -> np.ndarray:
+    def simulate(self, n_years: int) -> NDArray[np.int64]:
         """
         Simulate claim counts for n_years.
 
@@ -47,7 +48,7 @@ class PoissonFrequency(FrequencyModel):
         self.lam = float(lam)
         self._rng = np.random.default_rng(seed)
 
-    def simulate(self, n_years: int) -> np.ndarray:
+    def simulate(self, n_years: int) -> NDArray[np.int64]:
         if n_years <= 0:
             raise ValueError("n_years must be > 0")
 

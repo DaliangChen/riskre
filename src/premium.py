@@ -39,7 +39,7 @@ class PremiumCalculator:
     # -----------------------------
     # Core pricing
     # -----------------------------
-    def calculate(self, losses: np.ndarray) -> Dict[str, float]:
+    def calculate(self, losses: np.ndarray[float]) -> Dict[str, float]:
         """
         Calculate premium based on simulated reinsurance losses.
 
