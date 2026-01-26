@@ -7,3 +7,5 @@ types-PyYAML
 data-science-types
 matplotlib 
 reportlab
+types-requests 
+types-setuptools
