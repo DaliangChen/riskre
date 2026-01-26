@@ -5,6 +5,7 @@ import numpy as np
 from abc import ABC, abstractmethod
 from numpy import int64
 
+
 class FrequencyModel(ABC):
     """
     Base class for claim frequency models.
