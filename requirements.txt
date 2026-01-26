@@ -9,3 +9,5 @@ matplotlib
 reportlab
 types-requests 
 types-setuptools
+numpy-typing
+pyright

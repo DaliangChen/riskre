@@ -4,6 +4,7 @@ from __future__ import annotations
 import numpy as np
 from abc import ABC, abstractmethod
 from numpy import int64
+from numpy.typing import NDArray
 
 
 class FrequencyModel(ABC):

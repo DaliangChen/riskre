@@ -70,7 +70,7 @@ class PremiumCalculator:
     # -----------------------------
     # Risk measure logic
     # -----------------------------
-    def _risk_premium(self, losses: np.ndarray) -> float:
+    def _risk_premium(self, losses: np.ndarray[np.float64]) -> float:
         rm = self.risk_measure
 
         if rm == "expected_loss":
