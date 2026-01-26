@@ -14,7 +14,7 @@ class SeverityModel(ABC):
     """
 
     @abstractmethod
-    def simulate(self, n: int) -> np.ndarray:
+    def simulate(self, n: int) -> np.ndarray[np.float64]:
         """
         Simulate n claim amounts.
 
@@ -58,23 +58,25 @@ class LognormalSeverity(SeverityModel):
         Random seed for reproducibility
     """
 
-    def __init__(self, mu: float, sigma: float, seed: int | None = None):
+    def __init__(self, mu: float, sigma: float, seed: int | None = None) :
         if sigma <= 0:
             raise ValueError("sigma must be > 0 for lognormal distribution")
 
         self.mu = float(mu)
         self.sigma = float(sigma)
+        
+        # random number generator
         self._rng = np.random.default_rng(seed)
 
         # scipy uses shape = sigma, scale = exp(mu)
         self._dist = lognorm(s=self.sigma, scale=np.exp(self.mu))
 
-    def simulate(self, n: int) -> np.ndarray:
+    def simulate(self, n: int) -> np.ndarray[np.float64]:
         if n <= 0:
             raise ValueError("n must be > 0")
 
-        # Use numpy RNG for reproducibility
-        z = self._rng.standard_normal(n)
+        # generate samples using inverse transform sampling
+        z: np.ndarray[np.float64] = self._rng.standard_normal(n)
         return np.exp(self.mu + self.sigma * z)
 
     def mean(self) -> float:
