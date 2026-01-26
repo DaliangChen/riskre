@@ -25,6 +25,7 @@ reinsurance:
   limit: 4000000
 
 pricing:
+  # TODO
   # Expense ratio for reinsurance
   expense_ratio: 0.05
   # Risk measure to use (expected_loss, var, tvar, pml)

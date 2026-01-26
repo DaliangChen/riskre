@@ -40,10 +40,19 @@ Accurate pricing of such treaties requires:
 ### 3.1 Loss Frequency
 
 - Annual number of loss events follows a **Poisson distribution**
+  - For a random variable $X$ following a Poisson distribution with parameter $\lambda$, the probability of observing exactly $k$ events is given by:
+    $$P(X = k) = \frac{\lambda^k e^{-\lambda}}{k!}$$
+    **$\lambda$ (Lambda)**: The **average number** of events occurring per unit of time or space (the expected value).
 
 ### 3.2 Loss Severity
 
 - Individual loss amounts follow a **Lognormal distribution**
+  - For a random variable $X$ following a Lognormal distribution with parameters $\mu$ and $\sigma$ (where $X > 0$), the probability density function is:
+    $$f(x) = \frac{1}{x\sigma\sqrt{2\pi}} \exp\left( -\frac{(\ln x - \mu)^2}{2\sigma^2} \right)$$
+
+    **$x$**: The value of the random variable (must be greater than 0).  
+    **$\mu$ (Mu)**: The mean of the variable's natural logarithm ($\ln X$).  
+    **$\sigma$ (Sigma)**: The standard deviation of the variable's natural logarithm ($\ln X$).
 
 ### 3.3 Independence
 
