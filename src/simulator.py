@@ -82,7 +82,7 @@ class MonteCarloEngine:
         """
         if not 0 < q < 1:
             raise ValueError("q must be in (0,1)")
-        return float(np.quantile(losses, q))
+        return float(np.quantile(losses, q)) # type: ignore
 
     @staticmethod
     def tvar(losses: np.ndarray[np.float64], q: float) -> float:
@@ -92,7 +92,7 @@ class MonteCarloEngine:
         if not 0 < q < 1:
             raise ValueError("q must be in (0,1)")
 
-        threshold: float = np.quantile(losses, q)  
+        threshold: float = np.quantile(losses, q)   # type: ignore
         tail_losses: np.ndarray[np.float64] = losses[losses >= threshold]
 
         if len(tail_losses) == 0:

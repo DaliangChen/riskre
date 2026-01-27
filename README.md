@@ -1,4 +1,4 @@
-## 📌 Reinsurance Pricing & Risk Simulation System (Mini)
+## 📌 Reinsurance Pricing & Risk Simulation System
 
 ### Author
 
@@ -9,8 +9,7 @@ Frankfurt, Germany
 
 ## 1. Project Overview
 
-This project implements a **Monte Carlo–based reinsurance pricing and risk simulation system**
-for **Excess of Loss (XoL)** reinsurance treaties.
+This project implements a **Monte Carlo–based reinsurance pricing and risk simulation system**.
 
 The system is designed as a **minimal yet realistic prototype**, reflecting
 how reinsurance pricing and risk assessment are performed in practice.
@@ -130,7 +129,7 @@ python src/main.py
 ```
 
 Simulation results will be printed to the console
-and optionally exported to `output/results.csv`.
+and optionally exported to `reports_output`.
 
 ---
 
