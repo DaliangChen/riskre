@@ -24,6 +24,7 @@ class FrequencyConfig(BaseModel):
         lam: float, expected number of claims per year
     """
 
+    # TODO add exponential config in yaml
     distribution: Literal["poisson", "exponential"]
     lam: float = Field(gt=0)
 
