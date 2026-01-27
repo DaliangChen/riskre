@@ -2,6 +2,9 @@
   "python.analysis.typeCheckingMode": "strict",
   "python.analysis.autoImportCompletions": true,
   "python.analysis.useLibraryCodeForTypes": true,
-  "python.analysis.packageIndexDepths": [{ "name": "numpy", "depth": 2 }],
-  "python.analysis.extraPaths": ["${workspaceFolder}/venv/Lib/site-packages"]
+  "python.analysis.extraPaths": ["${workspaceFolder}/venv/Lib/site-packages"],
+  "python.languageServer": "Pylance",
+  "python.analysis.languageServerMode": "full",
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.analysis.inlayHints.functionReturnTypes": true
 }

@@ -58,13 +58,13 @@ class LognormalSeverity(SeverityModel):
         Random seed for reproducibility
     """
 
-    def __init__(self, mu: float, sigma: float, seed: int | None = None) :
+    def __init__(self, mu: float, sigma: float, seed: int | None = None):
         if sigma <= 0:
             raise ValueError("sigma must be > 0 for lognormal distribution")
 
         self.mu = float(mu)
         self.sigma = float(sigma)
-        
+
         # random number generator
         self._rng = np.random.default_rng(seed)
 
@@ -77,7 +77,8 @@ class LognormalSeverity(SeverityModel):
 
         # generate samples using inverse transform sampling
         z: np.ndarray[np.float64] = self._rng.standard_normal(n)
-        return np.exp(self.mu + self.sigma * z)
+        ret = np.exp(self.sigma * z + self.mu)
+        return ret
 
     def mean(self) -> float:
         """

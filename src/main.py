@@ -19,8 +19,10 @@ def build_severity(cfg: cfg.SeverityConfig) -> LognormalSeverity:
 
 
 def main() -> None:
+    # Load configuration
     config: cfg.InsuranceConfig = cfg.load_config()
 
+    # Build models
     freq_model = build_frequency(config.frequency)
     sev_model = build_severity(config.severity)
 

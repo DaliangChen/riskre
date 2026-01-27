@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 from typing import Dict, Any
+from numpy.typing import NDArray
 
 from frequency import FrequencyModel
 from severity import SeverityModel
@@ -32,7 +33,7 @@ class MonteCarloEngine:
         self.retention = float(retention)
         self.limit = float(limit)
 
-    def run(self, n_years: int) -> Dict[str, Any]:
+    def run(self, n_years: int) -> Dict[str, np.ndarray[np.float64]]:
         """
         Run Monte Carlo simulation.
 
@@ -57,7 +58,7 @@ class MonteCarloEngine:
                 continue
 
             # simulate claim severities for the year
-            severities = self.severity_model.simulate(int(n_claims))
+            severities = self.severity_model.simulate(n_claims)
             annual_loss = severities.sum()
 
             gross_losses[i] = annual_loss
@@ -76,7 +77,7 @@ class MonteCarloEngine:
         return float(min(max(loss - self.retention, 0.0), self.limit))
 
     @staticmethod
-    def var(losses: np.ndarray, q: float) -> float:
+    def var(losses: np.ndarray[np.float64], q: float) -> float:
         """
         Value at Risk at level q.
         """
@@ -85,7 +86,7 @@ class MonteCarloEngine:
         return float(np.quantile(losses, q))
 
     @staticmethod
-    def tvar(losses: np.ndarray, q: float) -> float:
+    def tvar(losses: np.ndarray[np.float64], q: float) -> float:
         """
         Tail Value at Risk (Expected Shortfall).
         """
