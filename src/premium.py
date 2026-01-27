@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import numpy as np
 from typing import Dict, Literal
-
+from typing import cast
 
 RiskMeasure = Literal["expected_loss", "VaR", "TVaR", "PML"]
 
@@ -81,13 +81,15 @@ class PremiumCalculator:
                 raise ValueError("confidence_level required for VaR/TVaR")
 
             q = float(self.confidence_level)
+            if not 0 < q < 1:
+                raise ValueError("confidence_level must be in (0,1)")
 
             if rm == "VaR":
-                return float(np.quantile(losses, q))
+                return cast(float, np.quantile(losses, q))  # type: ignore
 
             # TVaR / Expected Shortfall
-            threshold = np.quantile(losses, q)
-            tail_losses = losses[losses >= threshold]
+            threshold: float = cast(float, np.quantile(losses, q))  # type: ignore
+            tail_losses: np.ndarray[np.float64] = losses[losses >= threshold]
 
             if tail_losses.size == 0:
                 return float(threshold)
@@ -96,6 +98,6 @@ class PremiumCalculator:
 
         if rm == "PML":
             # Simple PML proxy: high quantile (e.g. 99.5%)
-            return float(np.quantile(losses, 0.995))
+            return float(np.quantile(losses, 0.995))  # type: ignore
 
         raise ValueError(f"Unsupported risk measure: {rm}")

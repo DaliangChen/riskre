@@ -98,7 +98,7 @@ class LognormalSeverity(SeverityModel):
         """
         if not 0 < q < 1:
             raise ValueError("q must be in (0,1)")
-        return float(self._dist.ppf(q))
+        return float(self._dist.ppf(q))  # type: ignore
 
     def __repr__(self) -> str:
         return f"LognormalSeverity(mu={self.mu}, sigma={self.sigma})"

@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
-from typing import Dict, Any
-from numpy.typing import NDArray
+from typing import Dict
 
 from frequency import FrequencyModel
 from severity import SeverityModel
@@ -93,10 +92,10 @@ class MonteCarloEngine:
         if not 0 < q < 1:
             raise ValueError("q must be in (0,1)")
 
-        threshold = np.quantile(losses, q)
-        tail_losses = losses[losses >= threshold]
+        threshold: float = np.quantile(losses, q)  
+        tail_losses: np.ndarray[np.float64] = losses[losses >= threshold]
 
         if len(tail_losses) == 0:
-            return float(threshold)
+            return threshold
 
         return float(tail_losses.mean())
