@@ -1,6 +1,17 @@
-frequency_model: poisson
-severity_model: lognormal
-tail_threshold: 100000
-risk_loading: 0.2
-inflation_rate: 0.02
-climate_factor: 1.0
+# Simulation data parameters
+claim_generation:
+  # Number of simulated claims
+  n_claims: 10000
+
+  # Simulation time range
+  start_date: "2013-01-01"
+  end_date: "2023-12-31"
+
+  # Reinsurance contract parameters
+  contracts:
+    - contract_id: "C001" # Contract identifier
+      attachment_point: 100000 # Attachment point
+      limit: 500000 # Limit
+    - contract_id: "C002"
+      attachment_point: 200000
+      limit: 1000000
