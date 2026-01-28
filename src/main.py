@@ -2,17 +2,17 @@ import config_loader as cfg
 from frequency import PoissonFrequency
 from premium import PremiumCalculator
 from severity import LognormalSeverity
-from simulator import MonteCarloEngine
+from simulator import FrequencyModel, MonteCarloEngine, SeverityModel
 from pdf_report import PricingReportGenerator
 
 
-def build_frequency(cfg: cfg.FrequencyConfig) -> PoissonFrequency:
+def build_frequency(cfg: cfg.FrequencyConfig) -> FrequencyModel:
     if cfg.distribution == "poisson":
         return PoissonFrequency(cfg.lam)
     raise ValueError("Unsupported frequency model")
 
 
-def build_severity(cfg: cfg.SeverityConfig) -> LognormalSeverity:
+def build_severity(cfg: cfg.SeverityConfig) -> SeverityModel:
     if cfg.distribution == "lognormal":
         return LognormalSeverity(cfg.mu, cfg.sigma)
     raise ValueError("Unsupported severity model")
