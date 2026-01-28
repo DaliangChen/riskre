@@ -50,13 +50,3 @@ class DataManager:
         path = os.path.join(self.cleaned_data_path, filename)
         df.to_csv(path, index=False)
         return path
-
-    def export_for_modeling(self, df: pd.DataFrame) -> pd.DataFrame:
-        df_model = df.copy()
-
-        # example: calculate annual total losses
-        df_model["year"] = df_model["loss_date"].dt.year  # type: ignore
-        annual_losses: pd.DataFrame = (
-            df_model.groupby("year")["loss_amount"].sum().reset_index()  # type: ignore
-        )
-        return annual_losses

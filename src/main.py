@@ -17,10 +17,8 @@ def main() -> None:
     df_raw = manager.load_data("claims.csv")
     df_clean = manager.clean_data(df_raw)
     snapshot_path = manager.save_snapshot(df_clean)
-    df_model = manager.export_for_modeling(df_clean)
 
     print(f"Cleaned data saved to: {snapshot_path}")
-    # print(df_model.head())
 
 
 if __name__ == "__main__":

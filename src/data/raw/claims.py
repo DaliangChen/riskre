@@ -1,6 +1,6 @@
+from dataclasses import dataclass
 import pandas as pd
 from config.config_loader import ClaimGenerationConfig
-from fontTools.ttLib import TypedDict
 import numpy as np
 from datetime import date, timedelta
 
@@ -8,7 +8,8 @@ from datetime import date, timedelta
 np.random.seed(1)
 
 
-class Claim(TypedDict):
+@dataclass
+class Claim:
     """
     Claim record structure.
     """
@@ -71,15 +72,15 @@ class ClaimGenerator:
             exposure: float = round(np.random.uniform(0.8, 1.2), 2)  # type: ignore
 
             self.claims.append(
-                {
-                    "policy_id": policy_id,
-                    "contract_id": contract_id,
-                    "loss_date": loss_date,
-                    "loss_amount": round(loss_amount, 2),
-                    "attachment_point": attachment_point,
-                    "limit": limit,
-                    "exposure": exposure,
-                }
+                Claim(
+                    policy_id=policy_id,
+                    contract_id=contract_id,
+                    loss_date=loss_date,
+                    loss_amount=round(loss_amount, 2),
+                    attachment_point=attachment_point,
+                    limit=limit,
+                    exposure=exposure,
+                )
             )
 
         # save to csv
